@@ -1,7 +1,15 @@
 package com.example.ecctrainingspring.service;
 
-import org.springframework.stereotype.Service;
+import com.example.ecctrainingspring.model.po.Ticket;
+import com.example.ecctrainingspring.model.ro.TicketRO;
 
-@Service
+import java.util.List;
+
 public interface TicketService {
+
+    List<Ticket> findAllTickets();
+    Ticket findTicket(Long id);
+    void createTicket(TicketRO ticketRO);
+    int updateTicketById(Long id, TicketRO ticketRO);
+    void deleteTicketById(Long id);
 }
