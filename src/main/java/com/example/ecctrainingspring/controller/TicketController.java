@@ -1,13 +1,11 @@
 package com.example.ecctrainingspring.controller;
 
-import com.example.ecctrainingspring.model.po.Employee;
 import com.example.ecctrainingspring.model.po.Ticket;
 import com.example.ecctrainingspring.model.ro.TicketRO;
-import com.example.ecctrainingspring.repository.TicketRepository;
 import com.example.ecctrainingspring.service.TicketService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public class TicketController {
     }
 
     @GetMapping("/list")
-    public List<Ticket> listEmployee() {
+    public List<Ticket> listTickets() {
         return ticketService.findAllTickets();
     }
 
@@ -34,19 +32,22 @@ public class TicketController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createTicket (@RequestBody TicketRO ticketRo){
         ticketService.createTicket(ticketRo);
         return new ResponseEntity<>("Successfully created", HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateTicket (@PathVariable("id") Long id, @RequestBody TicketRO ticketRo){
         int row = ticketService.updateTicketById(id, ticketRo);
         return new ResponseEntity<>("Successfully updated! " + row + " row affected", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity updateTicket (@PathVariable("id") Long id){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity deleteTicket (@PathVariable("id") Long id){
         ticketService.deleteTicketById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

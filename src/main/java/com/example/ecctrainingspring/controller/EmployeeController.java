@@ -5,6 +5,7 @@ import com.example.ecctrainingspring.model.ro.EmployeeRO;
 import com.example.ecctrainingspring.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,18 +33,21 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createEmployee(@RequestBody EmployeeRO employeeRO) {
         employeeService.createEmployee(employeeRO);
         return new ResponseEntity<>("Employee Added", HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateEmployee(@PathVariable("id") Long id, @RequestBody EmployeeRO employeeRO) {
         int row = employeeService.updateEmployeeById(id, employeeRO);
         return new ResponseEntity<>("Employee updated successfully! " + row + " row affected.", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable("id") Long id) {
 
         employeeService.deleteEmployeeById(id);
@@ -52,12 +56,14 @@ public class EmployeeController {
     }
 
     @PutMapping("/assign-ticket/{ticketId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> assignTicket (@PathVariable("ticketId") Long ticketId, @RequestParam Long employeeNumber) {
         employeeService.assignTicket(employeeNumber, ticketId);
         return new ResponseEntity<>("Ticket assigned", HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/add-watchers/{ticketId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> assignWatchers(@PathVariable("ticketId") Long ticketId, @RequestParam List<Long> employeeNumbers) {
         employeeService.addWatchers(ticketId, employeeNumbers);
         return new ResponseEntity<>("Watchers assigned", HttpStatus.ACCEPTED);
