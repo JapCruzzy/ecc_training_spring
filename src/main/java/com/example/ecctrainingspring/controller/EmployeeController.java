@@ -9,9 +9,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
@@ -28,27 +29,28 @@ public class EmployeeController {
     }
 
     @GetMapping("/view/{id}")
-    public ResponseEntity<Employee> viewEmployee(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(employeeService.findEmployee(id), HttpStatus.OK);
+    public ResponseEntity<Optional<Employee>> viewEmployee(@PathVariable("id") Long id) {
+        Optional<Employee> employee = employeeService.findEmployee(id);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> createEmployee(@RequestBody EmployeeRO employeeRO) {
-        employeeService.createEmployee(employeeRO);
-        return new ResponseEntity<>("Employee Added", HttpStatus.CREATED);
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        Employee createdEmployee = employeeService.createEmployee(employee);
+        return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> updateEmployee(@PathVariable("id") Long id, @RequestBody EmployeeRO employeeRO) {
-        int row = employeeService.updateEmployeeById(id, employeeRO);
-        return new ResponseEntity<>("Employee updated successfully! " + row + " row affected.", HttpStatus.ACCEPTED);
+    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id, @RequestBody EmployeeRO employeeRO) {
+        Employee employee = employeeService.updateEmployeeById(id, employeeRO);
+        return new ResponseEntity<>(employee, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable("id") Long id) throws Exception {
 
         employeeService.deleteEmployeeById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

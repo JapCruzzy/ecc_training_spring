@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -16,10 +17,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ticket {
+public class Ticket implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ticketNo;
 
     @Column(name = "title")
@@ -36,11 +37,9 @@ public class Ticket {
     @Column(name = "status")
     private EnumStatus status;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "assignee")
+    @OneToOne
     private Employee assignee;
 
     @ManyToMany
-    @JoinColumn(name = "watchers", columnDefinition = "bigint[]")
     private List<Employee> watchers;
 }

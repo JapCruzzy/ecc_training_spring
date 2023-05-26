@@ -1,5 +1,6 @@
 package com.example.ecctrainingspring.controller;
 
+import com.example.ecctrainingspring.model.po.Employee;
 import com.example.ecctrainingspring.model.po.Ticket;
 import com.example.ecctrainingspring.model.ro.TicketRO;
 import com.example.ecctrainingspring.service.TicketService;
@@ -9,9 +10,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tickets")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class TicketController {
 
     final
@@ -27,22 +30,22 @@ public class TicketController {
     }
 
     @GetMapping("/view/{id}")
-    public ResponseEntity<Ticket> viewTicket(@PathVariable("id") Long id){
+    public ResponseEntity<Optional<Ticket>> viewTicket(@PathVariable("id") Long id){
         return new ResponseEntity<>(ticketService.findTicket(id), HttpStatus.OK);
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> createTicket (@RequestBody TicketRO ticketRo){
-        ticketService.createTicket(ticketRo);
-        return new ResponseEntity<>("Successfully created", HttpStatus.CREATED);
+    public ResponseEntity<Ticket> createTicket (@RequestBody Ticket ticket){
+        Ticket createdticket = ticketService.createTicket(ticket);
+        return new ResponseEntity<>(createdticket, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> updateTicket (@PathVariable("id") Long id, @RequestBody TicketRO ticketRo){
-        int row = ticketService.updateTicketById(id, ticketRo);
-        return new ResponseEntity<>("Successfully updated! " + row + " row affected", HttpStatus.OK);
+    public ResponseEntity<Ticket> updateTicket (@PathVariable("id") Long id, @RequestBody Ticket ticketRo){
+        Ticket ticket = ticketService.updateTicketById(id, ticketRo);
+        return new ResponseEntity<>(ticket, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

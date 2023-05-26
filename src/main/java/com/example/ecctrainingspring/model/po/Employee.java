@@ -7,19 +7,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "employees")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employee {
+public class Employee implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "employee_number", columnDefinition = "BIGINT(20) NOT NULL UNIQUE KEY auto_increment")
+    @Column(name = "employee_number", unique = true, updatable = false)
     private Long employeeNumber;
 
     @Column(name = "first_name")

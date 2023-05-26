@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     Ticket findTicketByTicketNo (Long id);
+
+    Ticket findTicketByAssignee_EmployeeNumber(Long employeeNumber);
+
 }

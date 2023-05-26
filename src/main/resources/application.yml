@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: jasper
+    url: jdbc:postgresql://localhost:5432/webhelpdesk
+    password: admin
+  sql:
+    init:
+      platform: postgres
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
