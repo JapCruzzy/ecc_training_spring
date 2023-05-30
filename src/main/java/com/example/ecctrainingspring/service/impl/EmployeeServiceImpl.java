@@ -92,7 +92,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void assignTicket(Long employeeNumber, Long ticketId) {
+    public Ticket assignTicket(Long employeeNumber, Long ticketId) {
         Ticket ticket = ticketRepository.findTicketByTicketNo(ticketId);
 
         if (ticket == null)
@@ -100,6 +100,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         ticket.setAssignee(employeeRepository.findEmployeeByEmployeeNumber(employeeNumber));
         ticketRepository.save(ticket);
+
+        return ticket;
 
     }
 

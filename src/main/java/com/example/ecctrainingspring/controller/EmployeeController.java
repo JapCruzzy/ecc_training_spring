@@ -1,6 +1,7 @@
 package com.example.ecctrainingspring.controller;
 
 import com.example.ecctrainingspring.model.po.Employee;
+import com.example.ecctrainingspring.model.po.Ticket;
 import com.example.ecctrainingspring.model.ro.EmployeeRO;
 import com.example.ecctrainingspring.service.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -59,9 +60,9 @@ public class EmployeeController {
 
     @PutMapping("/assign-ticket/{ticketId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> assignTicket (@PathVariable("ticketId") Long ticketId, @RequestParam Long employeeNumber) {
-        employeeService.assignTicket(employeeNumber, ticketId);
-        return new ResponseEntity<>("Ticket assigned", HttpStatus.ACCEPTED);
+    public ResponseEntity<Ticket> assignTicket (@PathVariable("ticketId") Long ticketId, @RequestParam Long employeeNumber) {
+        Ticket ticket = employeeService.assignTicket(employeeNumber, ticketId);
+        return new ResponseEntity<>(ticket, HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/add-watchers/{ticketId}")
