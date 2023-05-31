@@ -1,5 +1,6 @@
 package com.example.ecctrainingspring.service.impl;
 
+import com.example.ecctrainingspring.enums.EnumStatus;
 import com.example.ecctrainingspring.exception.EmployeeNotFoundException;
 import com.example.ecctrainingspring.exception.EmployeeNumberAlreadyExistException;
 import com.example.ecctrainingspring.exception.TicketCannotBeDeletedException;
@@ -94,11 +95,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Ticket assignTicket(Long employeeNumber, Long ticketId) {
         Ticket ticket = ticketRepository.findTicketByTicketNo(ticketId);
+        Employee employeeByEmployeeNumber = employeeRepository.findEmployeeByEmployeeNumber(employeeNumber);
 
         if (ticket == null)
             throw new TicketNotFoundException("Can't find ticket");
 
-        ticket.setAssignee(employeeRepository.findEmployeeByEmployeeNumber(employeeNumber));
+        ticket.setAssignee(employeeByEmployeeNumber);
+        ticket.setStatus(EnumStatus.ASSIGNED);
         ticketRepository.save(ticket);
 
         return ticket;
@@ -106,9 +109,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void addWatchers(Long ticketId, List<Long> employeeNumbers) {
+    public Ticket addWatchers(Long ticketId, List<Long> employeeNumbers) {
         Ticket ticket = ticketRepository.findTicketByTicketNo(ticketId);
         ticket.setWatchers(employeeRepository.findByEmployeeNumberIn(employeeNumbers));
         ticketRepository.save(ticket);
+
+        return ticket;
     }
 }

@@ -15,5 +15,5 @@ public interface EmployeeService {
     Employee updateEmployeeById(Long id, EmployeeRO employeeRO);
     void deleteEmployeeById(Long id) throws Exception;
     Ticket assignTicket(Long employeeId, Long ticketId);
-    void addWatchers(Long ticketId, List<Long> employeeNumber);
+    Ticket addWatchers(Long ticketId, List<Long> employeeNumber);
 }

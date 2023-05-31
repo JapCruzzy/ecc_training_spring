@@ -36,7 +36,7 @@ public class TicketController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Ticket> createTicket (@RequestBody Ticket ticket){
+    public ResponseEntity<Ticket> createTicket (@RequestBody TicketRO ticket){
         Ticket createdticket = ticketService.createTicket(ticket);
         return new ResponseEntity<>(createdticket, HttpStatus.CREATED);
     }

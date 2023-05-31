@@ -1,5 +1,6 @@
 package com.example.ecctrainingspring.service.impl;
 
+import com.example.ecctrainingspring.enums.EnumStatus;
 import com.example.ecctrainingspring.exception.TicketNotFoundException;
 import com.example.ecctrainingspring.model.po.Ticket;
 import com.example.ecctrainingspring.model.ro.TicketRO;
@@ -39,12 +40,12 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket createTicket(Ticket ticketRO) {
+    public Ticket createTicket(TicketRO ticketRO) {
         Ticket ticket = new Ticket();
         ticket.setTitle(ticketRO.getTitle());
         ticket.setDescription(ticketRO.getDescription());
         ticket.setSeverity(ticketRO.getSeverity());
-        ticket.setStatus(ticketRO.getStatus());
+        ticket.setStatus(EnumStatus.NEW);
         ticketRepository.save(ticket);
 
         return ticket;

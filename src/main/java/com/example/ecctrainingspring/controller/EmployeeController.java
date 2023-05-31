@@ -67,8 +67,8 @@ public class EmployeeController {
 
     @PutMapping("/add-watchers/{ticketId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> assignWatchers(@PathVariable("ticketId") Long ticketId, @RequestParam List<Long> employeeNumbers) {
-        employeeService.addWatchers(ticketId, employeeNumbers);
-        return new ResponseEntity<>("Watchers assigned", HttpStatus.ACCEPTED);
+    public ResponseEntity<Ticket> assignWatchers(@PathVariable("ticketId") Long ticketId, @RequestParam List<Long> employeeNumber) {
+        Ticket ticket = employeeService.addWatchers(ticketId, employeeNumber);
+        return new ResponseEntity<>(ticket, HttpStatus.ACCEPTED);
     }
 }
